@@ -14,10 +14,7 @@ public class ProductPage {
     WebDriverWait wait;
 
     // --- LOCATORS ---
-    // 1. Tambah Locator untuk Kategori "Laptops"
     @FindBy(linkText = "Laptops") WebElement laptopCategoryLink;
-
-    // 2. Locator Produk (MacBook Pro)
     @FindBy(linkText = "MacBook Pro") WebElement productLink;
 
     @FindBy(xpath = "//a[text()='Add to cart']") WebElement addToCartButton;
@@ -37,7 +34,7 @@ public class ProductPage {
         // STEP 2: Tunggu sebentar biar produk laptop muncul
         Thread.sleep(3000);
 
-        // STEP 3: Baru klik MacBook Pro
+        // STEP 3: Klik MacBook Pro
         wait.until(ExpectedConditions.visibilityOf(productLink));
         productLink.click();
 

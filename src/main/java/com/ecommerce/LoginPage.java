@@ -34,10 +34,10 @@ public class LoginPage {
         // Klik menu Login di navbar
         loginMenuLink.click();
 
-        // Tunggu modal muncul dan field username bisa diketik
+        // Tunggu form login muncul dan field username bisa diketik
         wait.until(ExpectedConditions.visibilityOf(usernameField));
 
-        usernameField.clear(); // [BEST PRACTICE] Bersihkan dulu takutnya ada sisa teks
+        usernameField.clear();
         usernameField.sendKeys(username);
 
         passwordField.clear();
@@ -45,16 +45,12 @@ public class LoginPage {
 
         // Klik tombol Log in di dalam modal
         loginButton.click();
-
-        // [HAPUS Thread.sleep]
-        // Kita tidak butuh sleep di sini karena kita akan melakukan waiting di langkah validasi (isWelcomeTextDisplayed)
     }
 
-    // [BAGIAN KRUSIAL YANG DIPERBAIKI]
     public boolean isWelcomeTextDisplayed() {
         try {
-            // Tunggu sampai teks "Welcome..." benar-benar muncul sebelum return true
-            // Kalau dalam 15 detik tidak muncul, dia akan throw TimeoutException -> masuk catch -> return false
+            // Tunggu sampai teks "Welcome..." benar-benar muncul sehingga return true
+            // Jika dalam 15 detik tidak muncul, maka akan throw TimeoutException -> masuk catch -> return false
             wait.until(ExpectedConditions.visibilityOf(welcomeText));
             return welcomeText.isDisplayed();
         } catch (Exception e) {

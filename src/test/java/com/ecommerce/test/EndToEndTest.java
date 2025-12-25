@@ -35,17 +35,13 @@ public class EndToEndTest {
         loginPage = new LoginPage(driver);
         loginPage.loginToApp("dmasmk", "12345678");
 
-        // [FIX UTAMA] Beri jeda 3 detik agar Modal Login menutup & halaman refresh
         Thread.sleep(3000);
-
-        // Sekarang baru di-Assert. Kemungkinan besar ini akan PASS sekarang.
         Assert.assertTrue(loginPage.isWelcomeTextDisplayed(), "Login Gagal! Teks Welcome tidak muncul.");
 
         // 2. Beli Barang
         productPage = new ProductPage(driver);
         productPage.buyProduct();
 
-        // [FIX TAMBAHAN] DemoBlaze ada alert "Product added". Jeda sebentar sebelum pindah halaman.
         Thread.sleep(2000);
 
         productPage.goToCart();
@@ -62,10 +58,8 @@ public class EndToEndTest {
         );
 
         // 4. Validasi Sukses
-        // [FIX TAMBAHAN] Beri jeda sedikit agar modal "Thank you" muncul sempurna
         Thread.sleep(1000);
         Assert.assertTrue(cartPage.isOrderSuccess(), "Checkout Gagal! Pesan sukses tidak muncul.");
-
         System.out.println("TEST PASSED: User berhasil Login -> Beli -> Checkout (Firefox)");
     }
 
