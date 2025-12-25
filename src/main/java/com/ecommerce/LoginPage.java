@@ -16,10 +16,7 @@ public class LoginPage {
     @FindBy(id = "login2") WebElement loginMenuLink;
     @FindBy(id = "loginusername") WebElement usernameField;
     @FindBy(id = "loginpassword") WebElement passwordField;
-
-    // [UPDATE] Locator tombol login lebih spesifik agar tidak tertukar tombol lain
     @FindBy(xpath = "//button[@onclick='logIn()']") WebElement loginButton;
-
     @FindBy(id = "nameofuser") WebElement welcomeText;
 
     // --- CONSTRUCTOR ---
