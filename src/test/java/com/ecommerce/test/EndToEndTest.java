@@ -65,7 +65,7 @@ public class EndToEndTest {
 
     @AfterClass
     public void tearDown() {
-        // Jeda sebentar sebelum browser menutup agar kamu bisa lihat hasilnya
+        // Jeda sebentar sebelum browser menutup agar bisa melihat hasilnya
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

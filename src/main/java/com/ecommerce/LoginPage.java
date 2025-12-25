@@ -22,7 +22,7 @@ public class LoginPage {
     // --- CONSTRUCTOR ---
     public LoginPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15)); // Perpanjang sedikit durasi wait
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         PageFactory.initElements(driver, this);
     }
 
