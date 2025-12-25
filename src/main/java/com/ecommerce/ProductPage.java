@@ -13,8 +13,13 @@ public class ProductPage {
     WebDriver driver;
     WebDriverWait wait;
 
-    // Pilih HP Samsung Galaxy S6
-    @FindBy(linkText = "Samsung galaxy s6") WebElement productLink;
+    // --- LOCATORS ---
+    // 1. Tambah Locator untuk Kategori "Laptops"
+    @FindBy(linkText = "Laptops") WebElement laptopCategoryLink;
+
+    // 2. Locator Produk (MacBook Pro)
+    @FindBy(linkText = "MacBook Pro") WebElement productLink;
+
     @FindBy(xpath = "//a[text()='Add to cart']") WebElement addToCartButton;
     @FindBy(id = "cartur") WebElement cartMenuLink;
 
@@ -25,15 +30,25 @@ public class ProductPage {
     }
 
     public void buyProduct() throws InterruptedException {
-        Thread.sleep(2000); // Tunggu home loading
+        // STEP 1: Klik Kategori Laptop dulu!
+        wait.until(ExpectedConditions.visibilityOf(laptopCategoryLink));
+        laptopCategoryLink.click();
+
+        // STEP 2: Tunggu sebentar biar produk laptop muncul
+        Thread.sleep(3000);
+
+        // STEP 3: Baru klik MacBook Pro
+        wait.until(ExpectedConditions.visibilityOf(productLink));
         productLink.click();
+
+        // STEP 4: Klik Add to Cart
         wait.until(ExpectedConditions.visibilityOf(addToCartButton));
         addToCartButton.click();
 
-        // Handle Pop-up "Product added"
+        // STEP 5: Handle Pop-up "Product added"
         wait.until(ExpectedConditions.alertIsPresent());
         Alert alert = driver.switchTo().alert();
-        alert.accept(); // Klik OK di pop-up
+        alert.accept();
     }
 
     public void goToCart() {

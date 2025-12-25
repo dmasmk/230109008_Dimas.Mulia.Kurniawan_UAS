@@ -20,11 +20,11 @@ public class EndToEndTest {
 
     @BeforeClass
     public void setup() {
-
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver();
 
         driver.manage().window().maximize();
+        // Implicit wait tetap dipakai untuk jaga-jaga elemen lambat loading
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get("https://www.demoblaze.com/");
     }
@@ -33,26 +33,51 @@ public class EndToEndTest {
     public void testFullFlow() throws InterruptedException {
         // 1. Login
         loginPage = new LoginPage(driver);
-        // GANTI DENGAN AKUN YANG SUDAH KAMU DAFTARKAN
         loginPage.loginToApp("dmasmk", "12345678");
-        Assert.assertTrue(loginPage.isWelcomeTextDisplayed(), "Login Gagal!");
+
+        // [FIX UTAMA] Beri jeda 3 detik agar Modal Login menutup & halaman refresh
+        Thread.sleep(3000);
+
+        // Sekarang baru di-Assert. Kemungkinan besar ini akan PASS sekarang.
+        Assert.assertTrue(loginPage.isWelcomeTextDisplayed(), "Login Gagal! Teks Welcome tidak muncul.");
 
         // 2. Beli Barang
         productPage = new ProductPage(driver);
         productPage.buyProduct();
+
+        // [FIX TAMBAHAN] DemoBlaze ada alert "Product added". Jeda sebentar sebelum pindah halaman.
+        Thread.sleep(2000);
+
         productPage.goToCart();
 
         // 3. Checkout
         cartPage = new CartPage(driver);
-        cartPage.checkoutProduct("Mahasiswa UAS", "123456789");
+        cartPage.checkoutProduct(
+                "dmasmk",        // Name
+                "Indonesia",     // Country
+                "Cilacap",       // City
+                "0000111145",    // Credit Card
+                "12",            // Month
+                "2025"           // Year
+        );
 
         // 4. Validasi Sukses
-        Assert.assertTrue(cartPage.isOrderSuccess(), "Checkout Gagal!");
+        // [FIX TAMBAHAN] Beri jeda sedikit agar modal "Thank you" muncul sempurna
+        Thread.sleep(1000);
+        Assert.assertTrue(cartPage.isOrderSuccess(), "Checkout Gagal! Pesan sukses tidak muncul.");
+
         System.out.println("TEST PASSED: User berhasil Login -> Beli -> Checkout (Firefox)");
     }
 
     @AfterClass
     public void tearDown() {
+        // Jeda sebentar sebelum browser menutup agar kamu bisa lihat hasilnya
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         if (driver != null) {
             driver.quit();
         }
